@@ -4,7 +4,7 @@
 `rostopic list`
 
 ### Output
-'''sh
+```sh
 /camera/color/camera_info
 /camera/color/image_raw
 /camera/color/image_raw/compressed

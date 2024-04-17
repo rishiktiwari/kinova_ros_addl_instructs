@@ -4,7 +4,7 @@
 `rostopic list /my_gen3_lite`
 
 ### Output
-'''sh
+```sh
 /my_gen3_lite/action_topic
 /my_gen3_lite/arm_state_topic
 /my_gen3_lite/attached_collision_object
@@ -83,4 +83,4 @@
 /my_gen3_lite/servoing_mode_topic
 /my_gen3_lite/trajectory_execution_event
 /my_gen3_lite/user_topic
-'''
+```

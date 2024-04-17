@@ -194,26 +194,42 @@ sudo apt install gstreamer1.0-tools gstreamer1.0-libav libgstreamer1.0-dev libgs
 sudo apt install ros-melodic-rgbd-launch
 ```
 
-#### Building & Installing Kinova vision package
+### Building & Installing Kinova vision package
 
 ```sh
-mkdir -p ~/catkin_vision_workspace/src
-
-cd ~/catkin_vision_workspace/src/
+cd ~/catkin_workspace/src
 
 git clone https://github.com/Kinovarobotics/ros_kortex_vision.git
 
-catkin_init_workspace
-
 cd ../
 
-catkin_make clean
-
 catkin_make
-
-catkin_make install
-
-echo "source ~/catkin_vision_workspace/devel/setup.bash" >> ~/.bashrc
-
-source ~/.bashrc
 ```
+
+> To selectively make the package use `catkin_make -DCATKIN_WHITELIST_PACKAGES="ros_kortex_vision"`
+
+**IMPORTANT:**
+Restart the terminal or enter `source ~/catkin_workspace/devel/setup.bash`
+
+<details>
+<summary>To install kortex_vision in new catkin workspace, expand me and ignore the above instructions.</summary>
+<code>
+mkdir -p ~/catkin_vision_workspace/src
+<br><br>
+cd ~/catkin_vision_workspace/src/
+<br><br>
+git clone https://github.com/Kinovarobotics/ros_kortex_vision.git
+<br><br>
+catkin_init_workspace
+<br><br>
+cd ../
+<br><br>
+catkin_make clean
+<br><br>
+catkin_make
+<br><br>
+echo "source ~/catkin_vision_workspace/devel/setup.bash" >> ~/.bashrc
+<br><br>
+source ~/.bashrc
+</code>
+</details>
