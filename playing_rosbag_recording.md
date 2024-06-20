@@ -1,6 +1,8 @@
-# rosbag play
+# Playing arm rosbag
 
-Terminal tab #1
+[[rosbag docs]](http://wiki.ros.org/rosbag/Commandline)
+
+Terminal tab #1: start Gazebo and RViz for playback.
 ```sh
 roslaunch kortex_gazebo spawn_for_playback.launch arm:=gen3 dof:=6 gripper:=robotiq_2f_140 use_trajectory_controller:=false --master-logger-level=error
 ```

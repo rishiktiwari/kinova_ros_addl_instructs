@@ -1,4 +1,8 @@
-### To record essential topics of Kinova Gen3 arm with vision and gripper module
+# Record arm using rosbag
+
+[[rosbag docs]](http://wiki.ros.org/rosbag/Commandline)
+
+To record essential topics of Kinova Gen3 arm with vision and gripper module
 
 ```sh
 rosbag record \
@@ -35,7 +39,9 @@ rosbag record \
 /my_gen3/trajectory_execution_event \
 /tf \
 /tf_static \
---output-name=pickPlaceTask_ball_1 \
 --buffsize=4096 \
---chunksize=1024
+--chunksize=1024 \
+--output-name=bag_file_name_here
 ```
+
+> replace `bag_file_name_here` with the desired bag file name to save as.

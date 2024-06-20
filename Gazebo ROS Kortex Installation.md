@@ -1,8 +1,7 @@
-Execute all comands below as root.
-sudo -i
+Execute all comands below as root: `sudo -i`
 
 
-# ROS + Kortex + Catkin Setup
+# ROS + Gazebo + ros_kortex + Catkin Setup
 
 ### Gazebo Citadel Install
 [Source](https://gazebosim.org/docs/citadel/install_ubuntu)
@@ -50,7 +49,7 @@ rosdep update --include-eol-distros
 
 
 ### Gazebo-ROS Integration
-[Source](https://gazebosim.org/docs/citadel/ros_integration)
+[[Original Source]](https://gazebosim.org/docs/citadel/ros_integration)
 
 ```sh
 apt install ros-melodic-ros-ign
@@ -59,9 +58,9 @@ apt install ros-melodic-ros-ign
 
 
 ### Kortex Setup
-[Source](https://github.com/Kinovarobotics/ros_kortex.git)
+[[Original Source]](https://github.com/Kinovarobotics/ros_kortex/tree/melodic-devel)
 
-***Exit sudo***
+***`exit` sudo if used `sudo -i` previously for the following commands:s***
 
 ```sh
 cd ~
@@ -79,9 +78,23 @@ conan profile update settings.compiler.libcxx=libstdc++11 default
 mkdir -p catkin_workspace/src
 
 cd catkin_workspace/src
+```
 
-git clone -b melodic-devel https://github.com/Kinovarobotics/ros_kortex.git
+**Use either one of the below repositories:**
 
+>
+> **[rishik_ros_kortex](https://github.com/rishiktiwari/rishik_ros_kortex) repo (recommended):**
+>> ```sh
+>> git clone https://github.com/rishiktiwari/rishik_ros_kortex.git ros_kortex
+>> ```
+>
+> **Kinova repo:**
+>> ```sh
+>> git clone -b melodic-devel https://github.com/Kinovarobotics/ros_kortex.git
+>> ```
+
+
+```sh
 cd ../
 
 rosdep install --from-paths src --ignore-src -y --rosdistro melodic
@@ -101,7 +114,7 @@ echo "source ~/catkin_workspace/devel/setup.bash" >> ~/.bashrc
 ```sh
 echo $ROS_PACKAGE_PATH
 ```
-**Output:** /home/rishik/catkin_workspace/src:/opt/ros/melodic/share
+**Desired Output:** /home/rishik/catkin_workspace/src:/opt/ros/melodic/share
 
 
 
@@ -120,14 +133,14 @@ roslaunch kortex_gazebo spawn_kortex_robot.launch
 roslaunch kortex_gazebo spawn_kortex_robot.launch arm:=gen3 dof:=6 gripper:=robotiq_2f_140
 ```
 
-> In RViz set the frame to **base_link** and click "add" then select RobotModel.
+> In RViz set the frame to **base_link** and click "add" then select RobotModel, not required if using rishik_ros_kortex repo.
 
 
 
 
 ## To use ROS with Arm
 
-[Official Guide](https://github.com/Kinovarobotics/ros_kortex/blob/melodic-devel/kortex_examples/readme.md)
+[[Official Guide]](https://github.com/Kinovarobotics/ros_kortex/blob/melodic-devel/kortex_examples/readme.md)
 
 ### Real arm test with ROS and RViz
 #### For Kinova Gen3 Lite
@@ -137,40 +150,50 @@ cd ~/catkin_workspace/src/ros_kortex/kortex_driver/launch
 roslaunch kortex_driver kortex_driver.launch arm:=gen3_lite
 ```
 
-**With reduced data publish rate use cyclic_data_publish_rate**
+With reduced data publish rate use `cyclic_data_publish_rate`
 ```sh
 roslaunch kortex_driver kortex_driver.launch arm:=gen3_lite cyclic_data_publish_rate:=2
 ```
 
 #### For Gen3 6DoF with vision and gripper
 
-* tab 1 - launch the robot
+* terminal tab 1 - launch the robot
   ```sh
-  roslaunch kortex_driver kortex_driver.launch arm:=gen3 dof:=6 vision:=true gripper:=robotiq_2f_140 cyclic_data_publish_rate:=2
+  roslaunch kortex_driver kortex_driver.launch arm:=gen3 dof:=6 vision:=true gripper:=robotiq_2f_140
   ```
 
-* tab 2 - launch the vision topics (camera & depth)
+  > Command arguments are listed [here](https://github.com/rishiktiwari/rishik_ros_kortex/blob/master/kortex_driver/readme.md#usage).
+
+* terminal tab 2 - launch the vision topics (for RGB & depth images)
+  > Make sure vision setup mentioned below is completed before running the following command.
+
   ```sh
   roslaunch kinova_vision kinova_vision.launch
   ```
 
 ### Test commands
 
+The following command sets speed of joint 0 (base) to -0.57 deg/s.
+
+Note: `duration` value is not implemented by kortex so has no effect but is required to satisfy type validation.
+
 ```sh
-rostopic pub -1 /my_gen3_lite/in/joint_velocity kortex_driver/Base_JointSpeeds "joint_speeds:
+rostopic pub -1 /my_gen3/in/joint_velocity kortex_driver/Base_JointSpeeds "joint_speeds:
 - joint_identifier: 0
   value: -0.57
   duration: 0"
 ```
 
+> Use topic parent name `/my_gen3_lite` for Kinova Gen3 Lite.
+
 **To get realtime joint states (Real or Sim)**
 ```sh
-rostopic echo /my_gen3_lite/joint_states
+rostopic echo /my_gen3/joint_states
 ```
 
 **To stop**
 ```sh
-rostopic pub -1 /my_gen3_lite/in/stop std_msgs/Empty "{}"
+rostopic pub -1 /my_gen3/in/stop std_msgs/Empty "{}"
 ```
 
 ### Sim arm test with CPP program
@@ -178,13 +201,13 @@ rostopic pub -1 /my_gen3_lite/in/stop std_msgs/Empty "{}"
 * Tab 1
   ```sh
   cd ~/catkin_workspace/src/ros_kortex/kortex_driver/launch
-  roslaunch kortex_driver kortex_driver.launch arm:=gen3_lite
+  roslaunch kortex_driver kortex_driver.launch arm:=gen3
   ```
 
 * Tab 2
   ```sh
   cd ~/catkin_workspace/src/ros_kortex/kortex_examples/launch
-  roslaunch kortex_examples full_arm_movement_cpp.launch robot_name:=my_gen3_lite
+  roslaunch kortex_examples full_arm_movement_cpp.launch robot_name:=my_gen3
   ```
 # Gen3 Vision Setup
 
@@ -212,7 +235,7 @@ catkin_make
 Restart the terminal or enter `source ~/catkin_workspace/devel/setup.bash`
 
 <details>
-<summary>To install kortex_vision in new catkin workspace, expand me and ignore the above instructions.</summary>
+<summary><b>not recommended:</b> To install kortex_vision in new catkin workspace, expand me and ignore the above instructions.</summary>
 <code>
 mkdir -p ~/catkin_vision_workspace/src
 <br><br>
