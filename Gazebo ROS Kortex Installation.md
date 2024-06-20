@@ -78,7 +78,20 @@ conan profile update settings.compiler.libcxx=libstdc++11 default
 mkdir -p catkin_workspace/src
 
 cd catkin_workspace/src
+```
 
+**Use either one of the below repositories:**
+
+>
+> **[rishik_ros_kortex](https://github.com/rishiktiwari/rishik_ros_kortex) repo (recommended):**
+>> ```sh
+>> git clone https://github.com/rishiktiwari/rishik_ros_kortex.git ros_kortex
+>> ```
+>
+> **Kinova repo:**
+>> ```sh
+>> git clone -b melodic-devel https://github.com/Kinovarobotics/ros_kortex.git
+>> ```
 
 ```sh
 cd ../
