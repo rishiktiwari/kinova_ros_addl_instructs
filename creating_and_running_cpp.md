@@ -1,5 +1,11 @@
 # Creating & Running Custom C++ programs
 
+Before proceeding, ensure Kortex API is installed. [Kortex API instructions](./Kortex%20API%20Setup.md)
+
+> I recommend creating custom c++ programs that use Kortex API inside `kortex/api_cpp/examples` instead of `catkin_workspace`.
+> 
+> Do not follow below instructions if doing so.
+
 ### 1. Navigate to src in catkin_workspace, ideally with ros_kortex.
 ```sh
 cd ~/catkin_workspace/src
@@ -16,6 +22,20 @@ Here `rishik_kinova` is the package name, `roscpp rospy ...` are the dependencie
 cd ~/catkin_workspace/src/rishik_kinova/src
 
 touch hello.cpp
+
+nano hello.cpp
+```
+
+Paste the following C++ code in hello.cpp and save the file (ctrl+o enter).
+```cpp
+#include <iostream>
+
+int main() {
+    using namespace std;
+
+    cout << "Namaste World" << endl;
+    return 0;
+}
 ```
 
 ### 4. Configure CMakeLists.
