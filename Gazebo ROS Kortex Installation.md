@@ -118,15 +118,19 @@ echo $ROS_PACKAGE_PATH
 
 
 
-### Test demo simulation in Gazebo & RViz
+## To Simulate in Gazebo
+
+Note: Uses kortex_gazebo launch file
+
+**Gen3 without gripper:**
 
 ```sh
-cd ~/catkin_workspace/src/ros_kortex/kortex_gazebo/launch
-
 roslaunch kortex_gazebo spawn_kortex_robot.launch
 ```
 
-**For gen3 with gripper use the following**
+> Add arg `arm:=gen3_lite` to simulate Gen3 Lite arm.
+
+**Gen3 with gripper:**
 
 ```sh
 roslaunch kortex_gazebo spawn_kortex_robot.launch arm:=gen3 dof:=6 gripper:=robotiq_2f_140
@@ -137,24 +141,26 @@ roslaunch kortex_gazebo spawn_kortex_robot.launch arm:=gen3 dof:=6 gripper:=robo
 
 
 
-## To use ROS with Arm
+## To use ROS + Real Arm
 
 [[Official Guide]](https://github.com/Kinovarobotics/ros_kortex/blob/melodic-devel/kortex_examples/readme.md)
 
-### Real arm test with ROS and RViz
-#### For Kinova Gen3 Lite
-```sh
-cd ~/catkin_workspace/src/ros_kortex/kortex_driver/launch
+Note: Gazebo simulator is not started because not required ;)
 
+### For Kinova Gen3 Lite
+
+Launch the kortex_driver:
+
+```sh
 roslaunch kortex_driver kortex_driver.launch arm:=gen3_lite
 ```
 
-With reduced data publish rate use `cyclic_data_publish_rate`
+To reduced data publish rate use `cyclic_data_publish_rate`
 ```sh
 roslaunch kortex_driver kortex_driver.launch arm:=gen3_lite cyclic_data_publish_rate:=2
 ```
 
-#### For Gen3 6DoF with vision and gripper
+### For Gen3 6DoF with vision and gripper
 
 * terminal tab 1 - launch the robot
   ```sh
@@ -170,7 +176,7 @@ roslaunch kortex_driver kortex_driver.launch arm:=gen3_lite cyclic_data_publish_
   roslaunch kinova_vision kinova_vision.launch
   ```
 
-### Test commands
+## Some Test commands (for Real & Sim)
 
 The following command sets speed of joint 0 (base) to -0.57 deg/s.
 
@@ -185,29 +191,30 @@ rostopic pub -1 /my_gen3/in/joint_velocity kortex_driver/Base_JointSpeeds "joint
 
 > Use topic parent name `/my_gen3_lite` for Kinova Gen3 Lite.
 
-**To get realtime joint states (Real or Sim)**
+**To get realtime joint states:**
 ```sh
 rostopic echo /my_gen3/joint_states
 ```
 
-**To stop**
+**To stop:**
 ```sh
 rostopic pub -1 /my_gen3/in/stop std_msgs/Empty "{}"
 ```
 
-### Sim arm test with CPP program
+### Running C++ example program
 
-* Tab 1
-  ```sh
-  cd ~/catkin_workspace/src/ros_kortex/kortex_driver/launch
-  roslaunch kortex_driver kortex_driver.launch arm:=gen3
-  ```
+* terminal tab 1: Start the appropriate kortex launch file (driver or gazebo).
 
-* Tab 2
+* terminal tab 2: Run the example c++ program.
   ```sh
-  cd ~/catkin_workspace/src/ros_kortex/kortex_examples/launch
   roslaunch kortex_examples full_arm_movement_cpp.launch robot_name:=my_gen3
   ```
+> These C++ examples use ROS & Kortex driver to interface with the real or sim arm.
+> 
+> This way of communication is **different** from [Kortex API examples](https://github.com/Kinovarobotics/kortex/tree/master/api_cpp/examples) that directly interfaces to arm via API without ROS. Therefore, Kortex API only works with real arm.
+> 
+> [[More Information]](https://github.com/rishiktiwari/rishik_ros_kortex/blob/master/kortex_examples/readme.md).
+
 # Gen3 Vision Setup
 
 ```sh
@@ -223,15 +230,17 @@ cd ~/catkin_workspace/src
 
 git clone https://github.com/Kinovarobotics/ros_kortex_vision.git
 
-cd ../
+cd ../s
 
 catkin_make
 ```
 
+> Run `catkin_make` in `~/catkin_workspace` directory NOT anywhere else.
+
 > To selectively make the package use `catkin_make -DCATKIN_WHITELIST_PACKAGES="ros_kortex_vision"`
 
-**IMPORTANT:**
-Restart the terminal or enter `source ~/catkin_workspace/devel/setup.bash`
+> **IMPORTANT:** Restart the terminal or enter:
+>> `source ~/catkin_workspace/devel/setup.bash`
 
 <details>
 <summary><b>not recommended:</b> To install kortex_vision in new catkin workspace, expand me and ignore the above instructions.</summary>
